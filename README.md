@@ -78,8 +78,9 @@ Traffic Control Docker recognizes the following labels:
   * `probability` - Independent loss probability to the packets outgoing from network
     * Accepts a floating point number followed by **%**
   * `correlation` - The correlation or distribution to be applied to probability losses based on the last packet as it follows:
-<img src="https://latex.codecogs.com/svg.image?Loss_{prob}=Correlation\times&space;LastPacket_{prob}&space;&plus;&space;(1-Correlation)\times&space;Probability">
-    > This label is ignore if `probability` is not set 
+    > This label is ignore if **probability** is not set 
+
+<p align="center"><img src="https://latex.codecogs.com/svg.image?Loss_{prob}=Correlation\times&space;LastPacket_{prob}&space;&plus;&space;(1-Correlation)\times&space;Probability"></p>
 
 * `org.label-schema.tc.packet` - Packet related label
   * `duplication` - Probability that packets will be duplicated

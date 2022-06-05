@@ -20,9 +20,9 @@ RUN set -ex \
     && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
     && ln -sf /sbin/ip /usr/sbin/ip \
-    && ln -sf /sbin/tc /usr/sbin/tc \
-    && mkdir -p /var/run/netns
+    && ln -sf /sbin/tc /usr/sbin/tc 
 
+WORKDIR /var/run/docker/netns
 
 WORKDIR /opt/app
 COPY --from=builder /go/bin/tc-docker .

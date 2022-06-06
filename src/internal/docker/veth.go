@@ -5,9 +5,9 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
+	"io/ioutil"
 
 	"github.com/CodyGuo/glog"
 	"github.com/brenozd/tc-docker/pkg/command"
@@ -44,8 +44,8 @@ func (c *Container) GetVeths(name, sandboxKey string) ([]string, error) {
 }
 
 func (c *Container) CreateIfb(name, veth string) (string, error) {
-	id := strings.ReplaceAll(veth, "veth", "")
-	ifb := fmt.Sprintf("ifb%s", id)
+	id:= strings.ReplaceAll(veth, "veth", "")
+	ifb:=fmt.Sprintf("ifb%s", id)
 
 	// Create ifb to handle ingress traffic
 	cmd := fmt.Sprintf("/usr/sbin/ip link add name %s type ifb", ifb)
@@ -55,7 +55,7 @@ func (c *Container) CreateIfb(name, veth string) (string, error) {
 		return "", fmt.Errorf("cmd: %s, out: %s, error: %v", cmd, out, err)
 	}
 
-	// Set ifb up
+	// Set ifb up 
 	cmd = fmt.Sprintf("/usr/sbin/ip link set dev %s up", ifb)
 	glog.Debug(cmd)
 	out, err = command.CombinedOutput(cmd)
@@ -86,7 +86,7 @@ func (c *Container) RemoveIfb(name string) error {
 	}
 	os.Remove("/tmp/" + name)
 
-	// Set ifb down
+	// Set ifb down 
 	cmd := fmt.Sprintf("/usr/sbin/ip link set dev %s down", ifb)
 	glog.Debug(cmd)
 	out, err := command.CombinedOutput(cmd)
@@ -94,7 +94,7 @@ func (c *Container) RemoveIfb(name string) error {
 		return fmt.Errorf("cmd: %s, out: %s, error: %v", cmd, out, err)
 	}
 
-	// Delete ifb
+	// Delete ifb 
 	cmd = fmt.Sprintf("/usr/sbin/ip link del name %s", ifb)
 	glog.Debug(cmd)
 	out, err = command.CombinedOutput(cmd)
@@ -107,7 +107,7 @@ func (c *Container) RemoveIfb(name string) error {
 }
 
 func (c *Container) RemoveVeth(name string) error {
-	veth := "/var/run/docker/netns/" + name
+	veth := "/var/run/netns/" + name
 	glog.Debugf("RemoveVeth: %s", veth)
 	return os.Remove(veth)
 }
@@ -137,8 +137,8 @@ func (c *Container) getHostVeths() ([]*Veth, error) {
 }
 
 func (c *Container) getContainerVeths(name, sandboxKey string) ([]*Veth, error) {
-	os.Remove("/var/run/docker/netns/" + name)
-	if err := os.Symlink(sandboxKey, "/var/run/docker/netns/"+name); err != nil {
+	os.Remove("/var/run/netns/" + name)
+	if err := os.Symlink(sandboxKey, "/var/run/netns/"+name); err != nil {
 		return nil, err
 	}
 	ipAddrCmd := fmt.Sprintf("/usr/sbin/ip netns exec %s ip addr show ", name)
